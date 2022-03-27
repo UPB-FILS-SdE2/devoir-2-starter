@@ -1,0 +1,325 @@
+use crate::parser::ast::*;
+
+grammar;
+
+match {
+    r#"(?:[^\s'"\\$\(\)\{\}><\&\|&=;]|\\.)+"# => WORD,
+    r"'(?:[^'\\]|\\.)*'" => SINGLE_QUOTES_WORD,
+    r#""(?:[^"\\]|\\.)*""# => DOUBLE_QUOTES_WORD,
+    "=" => EQUAL,
+    "$" => EXPAND,
+    "(" => LP,
+    ")" => RP,
+    "{" => LB,
+    "}" => RB,
+    "|" => PIPE,
+    "||" => OR,
+    "&" => BACKGROUND,
+    "&&" => AND,
+    ">" => OUTPUT_REDIRECT,
+    "2>" => ERROR_REDIRECT,
+    "&>" => OUTPUT_ERROR_REDIRECT,
+    "<" => INPUT_REDIRECT,
+    ">>" => OUTPUT_REDIRECT_APPEND,
+    "2>>" => ERROR_REDIRECT_APPEND,
+    "&>>" => OUTPUT_ERROR_REDIRECT_APPEND,
+    ";" => SEQUENCE,
+    "\r?\n" => {}
+} else {
+    r"\s+" => WS
+}
+
+pub Command: CommandPtr = {
+    <s1:Command> SEQUENCE <s2:PipeCommand>=> CommandPtr::new (Command::SequentialCommand (s1, s2)),
+    <s1:Command> SEQUENCE WS <s2:PipeCommand>=> CommandPtr::new (Command::SequentialCommand (s1, s2)),
+    <s:PipeCommand> => s
+};
+
+PipeCommand: CommandPtr = {
+    <s1:PipeCommand> PIPE <s2:AndOrCommand>=> CommandPtr::new (Command::PipeCommand (s1, s2)),
+    <s1:PipeCommand> PIPE WS <s2:AndOrCommand>=> CommandPtr::new (Command::PipeCommand (s1, s2)),
+    <s:AndOrCommand> => s
+};
+
+AndOrCommand: CommandPtr = {
+    <s1:AndOrCommand> AND <s2:SimpleCommand>=> CommandPtr::new (Command::AndCommand(s1, s2)),
+    <s1:AndOrCommand> AND WS <s2:SimpleCommand>=> CommandPtr::new (Command::AndCommand(s1, s2)),
+    <s1:AndOrCommand> OR <s2:SimpleCommand>=> CommandPtr::new (Command::OrCommand(s1, s2)),
+    <s1:AndOrCommand> OR WS <s2:SimpleCommand>=> CommandPtr::new (Command::OrCommand(s1, s2)),
+    <s:SimpleCommand> => s
+};
+
+SimpleCommand: CommandPtr = {
+    // <a:Assignments> WS <p:Params> => {
+    //     // for parameter in p.iter() {
+    //     //     get_redirects (redirects, parameter);
+    //     // }
+    //     let s = CommandPtr::new (Command::SimpleCommand {
+    //         assignments: a,
+    //         parameters: p,
+    //         redirects: RedirectsPtr::new (redirects.drain(..).collect())
+    //     });
+    //     s
+    // },
+    // <a:Assignments> => {
+    //     // for parameter in p.iter() {
+    //     //     get_redirects (redirects, parameter);
+    //     // }
+    //     let s = CommandPtr::new (Command::SimpleCommand {
+    //         assignments: a,
+    //         parameters: ParametersPtr::new (Parameters::new ()),
+    //         redirects: RedirectsPtr::new (redirects.drain(..).collect())
+    //     });
+    //     s
+    // },
+    <mut p:Params> => {
+        // for parameter in p.iter() {
+        //     get_redirects (redirects, parameter);
+        // }
+        let mut assignments = Assignments::new ();
+        let mut legal_assignment = true;
+        let mut redirects = Redirects::new ();
+        for parameter in &mut *p {
+            let mut param = Words::new ();
+            for word in (*parameter).drain(..) {
+                // let _:() = word;
+                if let Word::Redirect (r) = *word {
+                    redirects.push (r);
+                }
+                else
+                {
+                    param.push (word);
+                }
+            }
+            *parameter = WordsPtr::new (param);
+            if legal_assignment {
+                legal_assignment = false;
+                if parameter.len () > 1 {
+                    if let Word::Word (ref w) = *parameter[0] {
+                        if let Word::Word (ref eq) = *parameter[1] {
+                            if eq == "=" {
+                                assignments.push (AssignmentPtr::new (Assignment {
+                                    variable: (&*w).to_string(),
+                                    values: WordsPtr::new ((*parameter).drain (2..).collect ())
+                                }));
+                                (*parameter).clear ();
+                                legal_assignment = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        p = ParametersPtr::new (p.into_iter().filter (|parameter| parameter.len() > 0).collect());
+        let s = CommandPtr::new (Command::SimpleCommand {
+            assignments: AssignmentsPtr::new (assignments),
+            parameters: p,
+            redirects: RedirectsPtr::new (redirects.drain(..).collect())
+        });
+        // redirects.clear ();
+        s
+    }
+};
+
+Params: ParametersPtr = {
+    => ParametersPtr::new (Parameters::new ()),
+    <w:Words> => {
+        let mut p = ParametersPtr::new(Parameters::new ());
+        p.push (w);
+        p
+    },
+    <w:Words> WS <mut p:Params> => {
+        p.insert (0, w);
+        p
+    }
+}
+
+pub QuotedParams: ParametersPtr = {
+    => ParametersPtr::new (Parameters::new ()),
+    <w:Words> => {
+        let mut p = ParametersPtr::new(Parameters::new ());
+        p.push (w);
+        p
+    },
+    <w:Words> <ws:WS> <mut p:QuotedParams> => {
+        let mut words = Words::new();
+        words.push (WordPtr::new(Word::Word (ws.to_string())));
+        p.insert (0, WordsPtr::new(words));
+        p.insert (0, w);
+        p
+    },
+    <ws:WS> <mut p:QuotedParams> => {
+        let mut words = Words::new();
+        words.push (WordPtr::new(Word::Word (ws.to_string())));
+        p.insert (0, WordsPtr::new(words));
+        p
+    }
+}
+
+// Assignments: AssignmentsPtr = {
+//     <mut n:Assignments> WS <a:Assignment> => {
+//         (*n).insert (0, a);
+//         n
+//     },
+//     <a:Assignment> => {
+//         let mut n = AssignmentsPtr::new (Assignments::new ());
+//         (*n).push (a);
+//         n
+//     }
+// };
+
+// Assignment: AssignmentPtr = {
+//     <w1:WORD> EQUAL <w2:Words> => {
+//         let a = AssignmentPtr::new (Assignment {
+//             variable: w1.to_string (),
+//             values: w2
+//         });
+//         a
+//     },
+//     <w:WORD> EQUAL => {
+//         let a = AssignmentPtr::new (Assignment {
+//             variable: w.to_string (),
+//             values: WordsPtr::new (Words::new ())
+//         });
+//         a
+//     }
+// };
+
+Words: WordsPtr = {
+    <w:Word> => {
+        let mut words = WordsPtr::new (Words::new ());
+        words.push (w);
+        words
+    },
+    <w:Word><mut e:Words> => 
+    {
+        e.insert (0, w);
+        e
+    },
+    <r:Redirect> => {
+        // redirects.push (r);
+        let mut words = WordsPtr::new (Words::new ());
+        words.push (WordPtr::new (Word::Redirect (r)));
+        words
+    }
+}
+
+Redirect: RedirectPtr = {
+    INPUT_REDIRECT <w:Words> => {
+        let r = RedirectPtr::new (Redirect::Input {
+            words: w
+        });
+        r
+    },
+    INPUT_REDIRECT WS <w:Words> => {
+        let r = RedirectPtr::new (Redirect::Input {
+            words: w
+        });
+        r
+    },
+    OUTPUT_REDIRECT <w:Words> => {
+        let r = RedirectPtr::new (Redirect::Output {
+            words: w,
+            append: false
+        });
+        r
+    },
+    OUTPUT_REDIRECT WS <w:Words> => {
+        let r = RedirectPtr::new (Redirect::Output {
+            words: w,
+            append: false
+        });
+        r
+    },
+    ERROR_REDIRECT <w:Words> => {
+        let r = RedirectPtr::new (Redirect::Error {
+            words: w,
+            append: false
+        });
+        r
+    },
+    ERROR_REDIRECT WS <w:Words> => {
+        let r = RedirectPtr::new (Redirect::Error {
+            words: w,
+            append: false
+        });
+        r
+    },
+    OUTPUT_REDIRECT_APPEND <w:Words> => {
+        let r = RedirectPtr::new (Redirect::Output {
+            words: w,
+            append: true
+        });
+        r
+    },
+    OUTPUT_REDIRECT_APPEND WS <w:Words> => {
+        let r = RedirectPtr::new (Redirect::Output {
+            words: w,
+            append: true
+        });
+        r
+    },
+    ERROR_REDIRECT_APPEND <w:Words> => {
+        let r = RedirectPtr::new (Redirect::Error {
+            words: w,
+            append: true
+        });
+        r
+    },
+    OUTPUT_ERROR_REDIRECT_APPEND <w:Words> => {
+        let r = RedirectPtr::new (Redirect::OutputAndError {
+            words: w,
+            append: true
+        });
+        r
+    },
+    OUTPUT_ERROR_REDIRECT_APPEND WS <w:Words> => {
+        let r = RedirectPtr::new (Redirect::OutputAndError {
+            words: w,
+            append: true
+        });
+        r
+    },
+    OUTPUT_ERROR_REDIRECT <w:Words> => {
+        let r = RedirectPtr::new (Redirect::OutputAndError {
+            words: w,
+            append: false
+        });
+        r
+    },
+    OUTPUT_ERROR_REDIRECT WS <w:Words> => {
+        let r = RedirectPtr::new (Redirect::OutputAndError {
+            words: w,
+            append: false
+        });
+        r
+    }
+}
+
+Word: WordPtr = {
+    <w:WORD> => {
+        WordPtr::new (Word::Word (w.to_string()))
+    },
+    EQUAL=> {
+        WordPtr::new (Word::Word ("=".to_string()))
+    },
+    <sq: SINGLE_QUOTES_WORD> => {
+        WordPtr::new (Word::Word(sq[1..sq.len()-1].to_string()))
+    },
+    <sq: DOUBLE_QUOTES_WORD> => {
+        WordPtr::new (Word::Quotes(QuotedParamsParser::new().parse(&sq[1..sq.len()-1]).unwrap()))
+    },
+    <e:Expand> => e
+};
+
+Expand: WordPtr = {
+    EXPAND <w:WORD> => {
+        WordPtr::new (Word::Expand (w.to_string()))
+    },
+    EXPAND LB <w:WORD> RB => {
+        WordPtr::new (Word::Expand (w.to_string()))
+    },
+    EXPAND LP <s:Command> RP => {
+        WordPtr::new (Word::Execute (s))
+    }
+};
