@@ -5,8 +5,8 @@ use crate::parser::ast::*;
 extern crate lalrpop_util as __lalrpop_util;
 #[allow(unused_imports)]
 use self::__lalrpop_util::state_machine as __state_machine;
-extern crate core;
 extern crate alloc;
+extern crate core;
 
 #[cfg_attr(rustfmt, rustfmt_skip)]
 mod __parse__Command {
@@ -3310,207 +3310,151 @@ mod __intern_token {
 pub(crate) use self::__lalrpop_util::lexer::Token;
 
 #[allow(unused_variables)]
-fn __action0<
-    'input,
->(
-    input: &'input str,
-    (_, __0, _): (usize, CommandPtr, usize),
-) -> CommandPtr
-{
+fn __action0<'input>(input: &'input str, (_, __0, _): (usize, CommandPtr, usize)) -> CommandPtr {
     __0
 }
 
 #[allow(unused_variables)]
-fn __action1<
-    'input,
->(
+fn __action1<'input>(
     input: &'input str,
     (_, __0, _): (usize, ParametersPtr, usize),
-) -> ParametersPtr
-{
+) -> ParametersPtr {
     __0
 }
 
 #[allow(unused_variables)]
-fn __action2<
-    'input,
->(
+fn __action2<'input>(
     input: &'input str,
     (_, s1, _): (usize, CommandPtr, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, s2, _): (usize, CommandPtr, usize),
-) -> CommandPtr
-{
-    CommandPtr::new (Command::SequentialCommand (s1, s2))
+) -> CommandPtr {
+    CommandPtr::new(Command::SequentialCommand(s1, s2))
 }
 
 #[allow(unused_variables)]
-fn __action3<
-    'input,
->(
+fn __action3<'input>(
     input: &'input str,
     (_, s1, _): (usize, CommandPtr, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, s2, _): (usize, CommandPtr, usize),
-) -> CommandPtr
-{
-    CommandPtr::new (Command::SequentialCommand (s1, s2))
+) -> CommandPtr {
+    CommandPtr::new(Command::SequentialCommand(s1, s2))
 }
 
 #[allow(unused_variables)]
-fn __action4<
-    'input,
->(
-    input: &'input str,
-    (_, s, _): (usize, CommandPtr, usize),
-) -> CommandPtr
-{
+fn __action4<'input>(input: &'input str, (_, s, _): (usize, CommandPtr, usize)) -> CommandPtr {
     s
 }
 
 #[allow(unused_variables)]
-fn __action5<
-    'input,
->(
+fn __action5<'input>(
     input: &'input str,
     (_, s1, _): (usize, CommandPtr, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, s2, _): (usize, CommandPtr, usize),
-) -> CommandPtr
-{
-    CommandPtr::new (Command::PipeCommand (s1, s2))
+) -> CommandPtr {
+    CommandPtr::new(Command::PipeCommand(s1, s2))
 }
 
 #[allow(unused_variables)]
-fn __action6<
-    'input,
->(
+fn __action6<'input>(
     input: &'input str,
     (_, s1, _): (usize, CommandPtr, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, s2, _): (usize, CommandPtr, usize),
-) -> CommandPtr
-{
-    CommandPtr::new (Command::PipeCommand (s1, s2))
+) -> CommandPtr {
+    CommandPtr::new(Command::PipeCommand(s1, s2))
 }
 
 #[allow(unused_variables)]
-fn __action7<
-    'input,
->(
-    input: &'input str,
-    (_, s, _): (usize, CommandPtr, usize),
-) -> CommandPtr
-{
+fn __action7<'input>(input: &'input str, (_, s, _): (usize, CommandPtr, usize)) -> CommandPtr {
     s
 }
 
 #[allow(unused_variables)]
-fn __action8<
-    'input,
->(
+fn __action8<'input>(
     input: &'input str,
     (_, s1, _): (usize, CommandPtr, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, s2, _): (usize, CommandPtr, usize),
-) -> CommandPtr
-{
-    CommandPtr::new (Command::AndCommand(s1, s2))
+) -> CommandPtr {
+    CommandPtr::new(Command::AndCommand(s1, s2))
 }
 
 #[allow(unused_variables)]
-fn __action9<
-    'input,
->(
+fn __action9<'input>(
     input: &'input str,
     (_, s1, _): (usize, CommandPtr, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, s2, _): (usize, CommandPtr, usize),
-) -> CommandPtr
-{
-    CommandPtr::new (Command::AndCommand(s1, s2))
+) -> CommandPtr {
+    CommandPtr::new(Command::AndCommand(s1, s2))
 }
 
 #[allow(unused_variables)]
-fn __action10<
-    'input,
->(
+fn __action10<'input>(
     input: &'input str,
     (_, s1, _): (usize, CommandPtr, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, s2, _): (usize, CommandPtr, usize),
-) -> CommandPtr
-{
-    CommandPtr::new (Command::OrCommand(s1, s2))
+) -> CommandPtr {
+    CommandPtr::new(Command::OrCommand(s1, s2))
 }
 
 #[allow(unused_variables)]
-fn __action11<
-    'input,
->(
+fn __action11<'input>(
     input: &'input str,
     (_, s1, _): (usize, CommandPtr, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, s2, _): (usize, CommandPtr, usize),
-) -> CommandPtr
-{
-    CommandPtr::new (Command::OrCommand(s1, s2))
+) -> CommandPtr {
+    CommandPtr::new(Command::OrCommand(s1, s2))
 }
 
 #[allow(unused_variables)]
-fn __action12<
-    'input,
->(
-    input: &'input str,
-    (_, s, _): (usize, CommandPtr, usize),
-) -> CommandPtr
-{
+fn __action12<'input>(input: &'input str, (_, s, _): (usize, CommandPtr, usize)) -> CommandPtr {
     s
 }
 
 #[allow(unused_variables)]
-fn __action13<
-    'input,
->(
+fn __action13<'input>(
     input: &'input str,
     (_, mut p, _): (usize, ParametersPtr, usize),
-) -> CommandPtr
-{
+) -> CommandPtr {
     {
         // for parameter in p.iter() {
         //     get_redirects (redirects, parameter);
         // }
-        let mut assignments = Assignments::new ();
+        let mut assignments = Assignments::new();
         let mut legal_assignment = true;
-        let mut redirects = Redirects::new ();
+        let mut redirects = Redirects::new();
         for parameter in &mut *p {
-            let mut param = Words::new ();
+            let mut param = Words::new();
             for word in (*parameter).drain(..) {
                 // let _:() = word;
-                if let Word::Redirect (r) = *word {
-                    redirects.push (r);
-                }
-                else
-                {
-                    param.push (word);
+                if let Word::Redirect(r) = *word {
+                    redirects.push(r);
+                } else {
+                    param.push(word);
                 }
             }
-            *parameter = WordsPtr::new (param);
+            *parameter = WordsPtr::new(param);
             if legal_assignment {
                 legal_assignment = false;
-                if parameter.len () > 1 {
-                    if let Word::Word (ref w) = *parameter[0] {
-                        if let Word::Word (ref eq) = *parameter[1] {
+                if parameter.len() > 1 {
+                    if let Word::Word(ref w) = *parameter[0] {
+                        if let Word::Word(ref eq) = *parameter[1] {
                             if eq == "=" {
-                                assignments.push (AssignmentPtr::new (Assignment {
+                                assignments.push(AssignmentPtr::new(Assignment {
                                     variable: (&*w).to_string(),
-                                    values: WordsPtr::new ((*parameter).drain (2..).collect ())
+                                    values: WordsPtr::new((*parameter).drain(2..).collect()),
                                 }));
-                                (*parameter).clear ();
+                                (*parameter).clear();
                                 legal_assignment = true;
                             }
                         }
@@ -3518,11 +3462,15 @@ fn __action13<
                 }
             }
         }
-        p = ParametersPtr::new (p.into_iter().filter (|parameter| parameter.len() > 0).collect());
-        let s = CommandPtr::new (Command::SimpleCommand {
-            assignments: AssignmentsPtr::new (assignments),
+        p = ParametersPtr::new(
+            p.into_iter()
+                .filter(|parameter| parameter.len() > 0)
+                .collect(),
+        );
+        let s = CommandPtr::new(Command::SimpleCommand {
+            assignments: AssignmentsPtr::new(assignments),
             parameters: p,
-            redirects: RedirectsPtr::new (redirects.drain(..).collect())
+            redirects: RedirectsPtr::new(redirects.drain(..).collect()),
         });
         // redirects.clear ();
         s
@@ -3530,518 +3478,410 @@ fn __action13<
 }
 
 #[allow(unused_variables)]
-fn __action14<
-    'input,
->(
+fn __action14<'input>(
     input: &'input str,
     __lookbehind: &usize,
     __lookahead: &usize,
-) -> ParametersPtr
-{
-    ParametersPtr::new (Parameters::new ())
+) -> ParametersPtr {
+    ParametersPtr::new(Parameters::new())
 }
 
 #[allow(unused_variables)]
-fn __action15<
-    'input,
->(
-    input: &'input str,
-    (_, w, _): (usize, WordsPtr, usize),
-) -> ParametersPtr
-{
+fn __action15<'input>(input: &'input str, (_, w, _): (usize, WordsPtr, usize)) -> ParametersPtr {
     {
-        let mut p = ParametersPtr::new(Parameters::new ());
-        p.push (w);
+        let mut p = ParametersPtr::new(Parameters::new());
+        p.push(w);
         p
     }
 }
 
 #[allow(unused_variables)]
-fn __action16<
-    'input,
->(
+fn __action16<'input>(
     input: &'input str,
     (_, w, _): (usize, WordsPtr, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, mut p, _): (usize, ParametersPtr, usize),
-) -> ParametersPtr
-{
+) -> ParametersPtr {
     {
-        p.insert (0, w);
+        p.insert(0, w);
         p
     }
 }
 
 #[allow(unused_variables)]
-fn __action17<
-    'input,
->(
+fn __action17<'input>(
     input: &'input str,
     __lookbehind: &usize,
     __lookahead: &usize,
-) -> ParametersPtr
-{
-    ParametersPtr::new (Parameters::new ())
+) -> ParametersPtr {
+    ParametersPtr::new(Parameters::new())
 }
 
 #[allow(unused_variables)]
-fn __action18<
-    'input,
->(
-    input: &'input str,
-    (_, w, _): (usize, WordsPtr, usize),
-) -> ParametersPtr
-{
+fn __action18<'input>(input: &'input str, (_, w, _): (usize, WordsPtr, usize)) -> ParametersPtr {
     {
-        let mut p = ParametersPtr::new(Parameters::new ());
-        p.push (w);
+        let mut p = ParametersPtr::new(Parameters::new());
+        p.push(w);
         p
     }
 }
 
 #[allow(unused_variables)]
-fn __action19<
-    'input,
->(
+fn __action19<'input>(
     input: &'input str,
     (_, w, _): (usize, WordsPtr, usize),
     (_, ws, _): (usize, &'input str, usize),
     (_, mut p, _): (usize, ParametersPtr, usize),
-) -> ParametersPtr
-{
+) -> ParametersPtr {
     {
         let mut words = Words::new();
-        words.push (WordPtr::new(Word::Word (ws.to_string())));
-        p.insert (0, WordsPtr::new(words));
-        p.insert (0, w);
+        words.push(WordPtr::new(Word::Word(ws.to_string())));
+        p.insert(0, WordsPtr::new(words));
+        p.insert(0, w);
         p
     }
 }
 
 #[allow(unused_variables)]
-fn __action20<
-    'input,
->(
+fn __action20<'input>(
     input: &'input str,
     (_, ws, _): (usize, &'input str, usize),
     (_, mut p, _): (usize, ParametersPtr, usize),
-) -> ParametersPtr
-{
+) -> ParametersPtr {
     {
         let mut words = Words::new();
-        words.push (WordPtr::new(Word::Word (ws.to_string())));
-        p.insert (0, WordsPtr::new(words));
+        words.push(WordPtr::new(Word::Word(ws.to_string())));
+        p.insert(0, WordsPtr::new(words));
         p
     }
 }
 
 #[allow(unused_variables)]
-fn __action21<
-    'input,
->(
-    input: &'input str,
-    (_, w, _): (usize, WordPtr, usize),
-) -> WordsPtr
-{
+fn __action21<'input>(input: &'input str, (_, w, _): (usize, WordPtr, usize)) -> WordsPtr {
     {
-        let mut words = WordsPtr::new (Words::new ());
-        words.push (w);
+        let mut words = WordsPtr::new(Words::new());
+        words.push(w);
         words
     }
 }
 
 #[allow(unused_variables)]
-fn __action22<
-    'input,
->(
+fn __action22<'input>(
     input: &'input str,
     (_, w, _): (usize, WordPtr, usize),
     (_, mut e, _): (usize, WordsPtr, usize),
-) -> WordsPtr
-{
+) -> WordsPtr {
     {
-        e.insert (0, w);
+        e.insert(0, w);
         e
     }
 }
 
 #[allow(unused_variables)]
-fn __action23<
-    'input,
->(
-    input: &'input str,
-    (_, r, _): (usize, RedirectPtr, usize),
-) -> WordsPtr
-{
+fn __action23<'input>(input: &'input str, (_, r, _): (usize, RedirectPtr, usize)) -> WordsPtr {
     {
         // redirects.push (r);
-        let mut words = WordsPtr::new (Words::new ());
-        words.push (WordPtr::new (Word::Redirect (r)));
+        let mut words = WordsPtr::new(Words::new());
+        words.push(WordPtr::new(Word::Redirect(r)));
         words
     }
 }
 
 #[allow(unused_variables)]
-fn __action24<
-    'input,
->(
+fn __action24<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, w, _): (usize, WordsPtr, usize),
-) -> RedirectPtr
-{
+) -> RedirectPtr {
     {
-        let r = RedirectPtr::new (Redirect::Input {
-            words: w
-        });
+        let r = RedirectPtr::new(Redirect::Input { words: w });
         r
     }
 }
 
 #[allow(unused_variables)]
-fn __action25<
-    'input,
->(
+fn __action25<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, w, _): (usize, WordsPtr, usize),
-) -> RedirectPtr
-{
+) -> RedirectPtr {
     {
-        let r = RedirectPtr::new (Redirect::Input {
-            words: w
-        });
+        let r = RedirectPtr::new(Redirect::Input { words: w });
         r
     }
 }
 
 #[allow(unused_variables)]
-fn __action26<
-    'input,
->(
+fn __action26<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, w, _): (usize, WordsPtr, usize),
-) -> RedirectPtr
-{
+) -> RedirectPtr {
     {
-        let r = RedirectPtr::new (Redirect::Output {
+        let r = RedirectPtr::new(Redirect::Output {
             words: w,
-            append: false
+            append: false,
         });
         r
     }
 }
 
 #[allow(unused_variables)]
-fn __action27<
-    'input,
->(
+fn __action27<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, w, _): (usize, WordsPtr, usize),
-) -> RedirectPtr
-{
+) -> RedirectPtr {
     {
-        let r = RedirectPtr::new (Redirect::Output {
+        let r = RedirectPtr::new(Redirect::Output {
             words: w,
-            append: false
+            append: false,
         });
         r
     }
 }
 
 #[allow(unused_variables)]
-fn __action28<
-    'input,
->(
+fn __action28<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, w, _): (usize, WordsPtr, usize),
-) -> RedirectPtr
-{
+) -> RedirectPtr {
     {
-        let r = RedirectPtr::new (Redirect::Error {
+        let r = RedirectPtr::new(Redirect::Error {
             words: w,
-            append: false
+            append: false,
         });
         r
     }
 }
 
 #[allow(unused_variables)]
-fn __action29<
-    'input,
->(
+fn __action29<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, w, _): (usize, WordsPtr, usize),
-) -> RedirectPtr
-{
+) -> RedirectPtr {
     {
-        let r = RedirectPtr::new (Redirect::Error {
+        let r = RedirectPtr::new(Redirect::Error {
             words: w,
-            append: false
+            append: false,
         });
         r
     }
 }
 
 #[allow(unused_variables)]
-fn __action30<
-    'input,
->(
+fn __action30<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, w, _): (usize, WordsPtr, usize),
-) -> RedirectPtr
-{
+) -> RedirectPtr {
     {
-        let r = RedirectPtr::new (Redirect::Output {
+        let r = RedirectPtr::new(Redirect::Output {
             words: w,
-            append: true
+            append: true,
         });
         r
     }
 }
 
 #[allow(unused_variables)]
-fn __action31<
-    'input,
->(
+fn __action31<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, w, _): (usize, WordsPtr, usize),
-) -> RedirectPtr
-{
+) -> RedirectPtr {
     {
-        let r = RedirectPtr::new (Redirect::Output {
+        let r = RedirectPtr::new(Redirect::Output {
             words: w,
-            append: true
+            append: true,
         });
         r
     }
 }
 
 #[allow(unused_variables)]
-fn __action32<
-    'input,
->(
+fn __action32<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, w, _): (usize, WordsPtr, usize),
-) -> RedirectPtr
-{
+) -> RedirectPtr {
     {
-        let r = RedirectPtr::new (Redirect::Error {
+        let r = RedirectPtr::new(Redirect::Error {
             words: w,
-            append: true
+            append: true,
         });
         r
     }
 }
 
 #[allow(unused_variables)]
-fn __action33<
-    'input,
->(
+fn __action33<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, w, _): (usize, WordsPtr, usize),
-) -> RedirectPtr
-{
+) -> RedirectPtr {
     {
-        let r = RedirectPtr::new (Redirect::OutputAndError {
+        let r = RedirectPtr::new(Redirect::OutputAndError {
             words: w,
-            append: true
+            append: true,
         });
         r
     }
 }
 
 #[allow(unused_variables)]
-fn __action34<
-    'input,
->(
+fn __action34<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, w, _): (usize, WordsPtr, usize),
-) -> RedirectPtr
-{
+) -> RedirectPtr {
     {
-        let r = RedirectPtr::new (Redirect::OutputAndError {
+        let r = RedirectPtr::new(Redirect::OutputAndError {
             words: w,
-            append: true
+            append: true,
         });
         r
     }
 }
 
 #[allow(unused_variables)]
-fn __action35<
-    'input,
->(
+fn __action35<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, w, _): (usize, WordsPtr, usize),
-) -> RedirectPtr
-{
+) -> RedirectPtr {
     {
-        let r = RedirectPtr::new (Redirect::OutputAndError {
+        let r = RedirectPtr::new(Redirect::OutputAndError {
             words: w,
-            append: false
+            append: false,
         });
         r
     }
 }
 
 #[allow(unused_variables)]
-fn __action36<
-    'input,
->(
+fn __action36<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, w, _): (usize, WordsPtr, usize),
-) -> RedirectPtr
-{
+) -> RedirectPtr {
     {
-        let r = RedirectPtr::new (Redirect::OutputAndError {
+        let r = RedirectPtr::new(Redirect::OutputAndError {
             words: w,
-            append: false
+            append: false,
         });
         r
     }
 }
 
 #[allow(unused_variables)]
-fn __action37<
-    'input,
->(
-    input: &'input str,
-    (_, w, _): (usize, &'input str, usize),
-) -> WordPtr
-{
+fn __action37<'input>(input: &'input str, (_, w, _): (usize, &'input str, usize)) -> WordPtr {
     {
-        WordPtr::new (Word::Word (w.to_string()))
+        WordPtr::new(Word::Word(w.to_string()))
     }
 }
 
 #[allow(unused_variables)]
-fn __action38<
-    'input,
->(
-    input: &'input str,
-    (_, __0, _): (usize, &'input str, usize),
-) -> WordPtr
-{
+fn __action38<'input>(input: &'input str, (_, __0, _): (usize, &'input str, usize)) -> WordPtr {
     {
-        WordPtr::new (Word::Word ("=".to_string()))
+        WordPtr::new(Word::Word("=".to_string()))
     }
 }
 
 #[allow(unused_variables)]
-fn __action39<
-    'input,
->(
-    input: &'input str,
-    (_, sq, _): (usize, &'input str, usize),
-) -> WordPtr
-{
+fn __action39<'input>(input: &'input str, (_, sq, _): (usize, &'input str, usize)) -> WordPtr {
     {
-        WordPtr::new (Word::Word(sq[1..sq.len()-1].to_string()))
+        WordPtr::new(Word::Word(sq[1..sq.len() - 1].to_string()))
     }
 }
 
 #[allow(unused_variables)]
-fn __action40<
-    'input,
->(
-    input: &'input str,
-    (_, sq, _): (usize, &'input str, usize),
-) -> WordPtr
-{
+fn __action40<'input>(input: &'input str, (_, sq, _): (usize, &'input str, usize)) -> WordPtr {
     {
-        WordPtr::new (Word::Quotes(QuotedParamsParser::new().parse(&sq[1..sq.len()-1]).unwrap()))
+        WordPtr::new(Word::Quotes(
+            QuotedParamsParser::new()
+                .parse(&sq[1..sq.len() - 1])
+                .unwrap(),
+        ))
     }
 }
 
 #[allow(unused_variables)]
-fn __action41<
-    'input,
->(
-    input: &'input str,
-    (_, e, _): (usize, WordPtr, usize),
-) -> WordPtr
-{
+fn __action41<'input>(input: &'input str, (_, e, _): (usize, WordPtr, usize)) -> WordPtr {
     e
 }
 
 #[allow(unused_variables)]
-fn __action42<
-    'input,
->(
+fn __action42<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, w, _): (usize, &'input str, usize),
-) -> WordPtr
-{
+) -> WordPtr {
     {
-        WordPtr::new (Word::Expand (w.to_string()))
+        WordPtr::new(Word::Expand(w.to_string()))
     }
 }
 
 #[allow(unused_variables)]
-fn __action43<
-    'input,
->(
+fn __action43<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, w, _): (usize, &'input str, usize),
     (_, _, _): (usize, &'input str, usize),
-) -> WordPtr
-{
+) -> WordPtr {
     {
-        WordPtr::new (Word::Expand (w.to_string()))
+        WordPtr::new(Word::Expand(w.to_string()))
     }
 }
 
 #[allow(unused_variables)]
-fn __action44<
-    'input,
->(
+fn __action44<'input>(
     input: &'input str,
     (_, _, _): (usize, &'input str, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, s, _): (usize, CommandPtr, usize),
     (_, _, _): (usize, &'input str, usize),
-) -> WordPtr
-{
+) -> WordPtr {
     {
-        WordPtr::new (Word::Execute (s))
+        WordPtr::new(Word::Execute(s))
     }
 }
 
-pub trait __ToTriple<'input, >
-{
-    fn to_triple(value: Self) -> Result<(usize,Token<'input>,usize), __lalrpop_util::ParseError<usize, Token<'input>, &'static str>>;
+pub trait __ToTriple<'input> {
+    fn to_triple(
+        value: Self,
+    ) -> Result<
+        (usize, Token<'input>, usize),
+        __lalrpop_util::ParseError<usize, Token<'input>, &'static str>,
+    >;
 }
 
-impl<'input, > __ToTriple<'input, > for (usize, Token<'input>, usize)
-{
-    fn to_triple(value: Self) -> Result<(usize,Token<'input>,usize), __lalrpop_util::ParseError<usize, Token<'input>, &'static str>> {
+impl<'input> __ToTriple<'input> for (usize, Token<'input>, usize) {
+    fn to_triple(
+        value: Self,
+    ) -> Result<
+        (usize, Token<'input>, usize),
+        __lalrpop_util::ParseError<usize, Token<'input>, &'static str>,
+    > {
         Ok(value)
     }
 }
-impl<'input, > __ToTriple<'input, > for Result<(usize, Token<'input>, usize), &'static str>
-{
-    fn to_triple(value: Self) -> Result<(usize,Token<'input>,usize), __lalrpop_util::ParseError<usize, Token<'input>, &'static str>> {
+impl<'input> __ToTriple<'input> for Result<(usize, Token<'input>, usize), &'static str> {
+    fn to_triple(
+        value: Self,
+    ) -> Result<
+        (usize, Token<'input>, usize),
+        __lalrpop_util::ParseError<usize, Token<'input>, &'static str>,
+    > {
         match value {
             Ok(v) => Ok(v),
             Err(error) => Err(__lalrpop_util::ParseError::User { error }),

@@ -3,13 +3,11 @@ use std::io::Write;
 
 mod parser;
 
-use parser::ast::{Word, Words, Command};
+use parser::ast::{Command, Word, Words};
 
 use parser::CommandParser;
 
-use std::env;
-
-/// Returns one single String by combining all 
+/// Returns one single String by combining all
 /// the words of a parameter
 fn read_word(words: &Box<Words>) -> String {
     let mut parameter = String::new();
@@ -20,7 +18,7 @@ fn read_word(words: &Box<Words>) -> String {
             // ref s means s is a refernece to the String s from Word(s)
             // s is a reference to String(&String)
             Word::Word(ref s) => parameter.push_str(s),
-            Word::Expand(ref v) => parameter.push_str(""/*replace this with the value of environment variable who's name is stored in v or "" if the variable is not defined*/),
+            Word::Expand(ref v) => parameter.push_str(""/*replace this with the value of environment variable (std::env::var) who's name is stored in v or "" if the variable is not defined*/),
             // add here the other Word posibilities
             _ => {}
         }
@@ -29,15 +27,19 @@ fn read_word(words: &Box<Words>) -> String {
 }
 
 fn run(command: &Box<Command>) {
-    match *command {
-        Command::SimpleCommand {parameters, ..} => {
+    // *command is Box<Command>
+    // **command is Command
+    match **command {
+        // we use ref here has we cannot move parameters out of
+        // the command, so we take a reference to it
+        Command::SimpleCommand { ref parameters, .. } => {
             let command = read_word(&parameters[0]);
             match command.as_str() {
                 "exit" => std::process::exit(0),
-                command => println!("run {}", command)
+                command => println!("run {}", command),
             }
         }
-        _ => unimplemented!()
+        _ => unimplemented!(),
     }
 }
 
@@ -48,10 +50,13 @@ fn main() {
         let mut line = String::new();
         io::stdin().read_line(&mut line).unwrap();
         let cmd = line.trim_end();
-        println!("{:?}", cmd);
+        // println!("{:?}", cmd);
         let command = CommandParser::new().parse(cmd);
         match command {
-            Ok(parse_command) => run(&parse_command),
+            Ok(parse_command) => {
+                println!("{:#?}", parse_command);
+                run(&parse_command);
+            }
             Err(error) => eprintln!("Parse error: {}", error),
         }
     }

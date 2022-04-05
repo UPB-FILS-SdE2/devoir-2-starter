@@ -21,7 +21,7 @@ pub enum Word {
     Quotes(ParametersPtr),
     /// an env variable that has to be expended (replaced with its value)
     Expand(String),
-    /// a command that has to be executed and replaced with its output 
+    /// a command that has to be executed and replaced with its output
     /// (with the text that it wrote to stdout)
     Execute(CommandPtr),
     /// a redirect
@@ -33,13 +33,13 @@ pub type WordPtr = Box<Word>;
 /// Represents a command or a parameter
 /// It is formed out of several words
 /// that are concatenated before run
-/// 
-/// Ex: 
+///
+/// Ex:
 /// ```
 /// FILE=user
 /// cat ${FILE}name
 /// ```
-/// this will become 
+/// this will become
 /// ```
 /// cat username
 /// ```
@@ -78,7 +78,7 @@ pub enum Command {
         parameters: ParametersPtr,
         redirects: RedirectsPtr,
     },
-    /// two commands connected with a pipe 
+    /// two commands connected with a pipe
     /// ```
     /// execute1 || execute2
     /// ```
