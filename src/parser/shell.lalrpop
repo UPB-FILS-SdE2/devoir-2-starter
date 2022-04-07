@@ -266,6 +266,13 @@ Redirect: RedirectPtr = {
         });
         r
     },
+    ERROR_REDIRECT_APPEND WS <w:Words> => {
+        let r = RedirectPtr::new (Redirect::Error {
+            words: w,
+            append: true
+        });
+        r
+    },
     OUTPUT_ERROR_REDIRECT_APPEND <w:Words> => {
         let r = RedirectPtr::new (Redirect::OutputAndError {
             words: w,
