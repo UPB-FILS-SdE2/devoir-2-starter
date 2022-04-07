@@ -33,6 +33,8 @@ fn run(command: &Box<Command>) {
         // we use ref here has we cannot move parameters out of
         // the command, so we take a reference to it
         Command::SimpleCommand { ref parameters, .. } => {
+            // some commands are empty, they have to be ignored
+            // so make sure you verify that parameters actually has at least one element
             let command = read_word(&parameters[0]);
             match command.as_str() {
                 "exit" => std::process::exit(0),
@@ -48,16 +50,21 @@ fn main() {
         print!("$ ");
         let _ = io::stdout().flush();
         let mut line = String::new();
-        io::stdin().read_line(&mut line).unwrap();
-        let cmd = line.trim_end();
-        // println!("{:?}", cmd);
-        let command = CommandParser::new().parse(cmd);
-        match command {
-            Ok(parse_command) => {
-                println!("{:#?}", parse_command);
-                run(&parse_command);
+        let length = io::stdin().read_line(&mut line).unwrap();
+        if length > 0 {
+            let cmd = line.trim_end();
+            // println!("{:?}", cmd);
+            let command = CommandParser::new().parse(cmd);
+            match command {
+                Ok(parse_command) => {
+                    println!("{:#?}", parse_command);
+                    run(&parse_command);
+                }
+                Err(error) => eprintln!("Parse error: {}", error),
             }
-            Err(error) => eprintln!("Parse error: {}", error),
+        } else {
+            // we got end of file (EOF)
+            std::process::exit(0);
         }
     }
 }
