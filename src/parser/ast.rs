@@ -18,7 +18,7 @@ pub enum Word {
     Word(String),
     /// a list of parameters that have to be concatenated to
     /// a single string
-    Quotes(ParametersPtr),
+    Quotes(WordsPtr),
     /// an env variable that has to be expended (replaced with its value)
     Expand(String),
     /// a command that has to be executed and replaced with its output

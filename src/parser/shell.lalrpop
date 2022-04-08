@@ -1,4 +1,5 @@
 use crate::parser::ast::*;
+use crate::parser::quotes;
 
 grammar;
 
@@ -134,27 +135,27 @@ Params: ParametersPtr = {
     }
 }
 
-pub QuotedParams: ParametersPtr = {
-    => ParametersPtr::new (Parameters::new ()),
-    <w:Words> => {
-        let mut p = ParametersPtr::new(Parameters::new ());
-        p.push (w);
-        p
-    },
-    <w:Words> <ws:WS> <mut p:QuotedParams> => {
-        let mut words = Words::new();
-        words.push (WordPtr::new(Word::Word (ws.to_string())));
-        p.insert (0, WordsPtr::new(words));
-        p.insert (0, w);
-        p
-    },
-    <ws:WS> <mut p:QuotedParams> => {
-        let mut words = Words::new();
-        words.push (WordPtr::new(Word::Word (ws.to_string())));
-        p.insert (0, WordsPtr::new(words));
-        p
-    }
-}
+// pub QuotedParams: ParametersPtr = {
+//     => ParametersPtr::new (Parameters::new ()),
+//     <w:Words> => {
+//         let mut p = ParametersPtr::new(Parameters::new ());
+//         p.push (w);
+//         p
+//     },
+//     <w:Words> <ws:WS> <mut p:QuotedParams> => {
+//         let mut words = Words::new();
+//         words.push (WordPtr::new(Word::Word (ws.to_string())));
+//         p.insert (0, WordsPtr::new(words));
+//         p.insert (0, w);
+//         p
+//     },
+//     <ws:WS> <mut p:QuotedParams> => {
+//         let mut words = Words::new();
+//         words.push (WordPtr::new(Word::Word (ws.to_string())));
+//         p.insert (0, WordsPtr::new(words));
+//         p
+//     }
+// }
 
 // Assignments: AssignmentsPtr = {
 //     <mut n:Assignments> WS <a:Assignment> => {
@@ -314,7 +315,7 @@ Word: WordPtr = {
         WordPtr::new (Word::Word(sq[1..sq.len()-1].to_string()))
     },
     <sq: DOUBLE_QUOTES_WORD> => {
-        WordPtr::new (Word::Quotes(QuotedParamsParser::new().parse(&sq[1..sq.len()-1]).unwrap()))
+        WordPtr::new (Word::Quotes(quotes::WordsParser::new().parse(&sq[1..sq.len()-1]).unwrap()))
     },
     <e:Expand> => e
 };

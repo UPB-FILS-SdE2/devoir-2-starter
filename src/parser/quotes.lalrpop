@@ -1,0 +1,59 @@
+use crate::parser::ast::*;
+
+use crate::parser::shell::CommandParser;
+
+grammar;
+
+match {
+    r#"(?:[^\$\s'"\\]|\\.)+"# => WORD,
+    r#"\$\{\w+\}|\$\w+"# => EXPAND,
+    r#"\$\([^\)]+\)"# => EXECUTE,
+    "\r?\n" => {}
+} else {
+    r"\s+" => WS
+}
+
+pub Words: WordsPtr = {
+    <w:Word> => {
+        let mut words = WordsPtr::new (Words::new ());
+        words.push (w);
+        words
+    },
+    <ws:WS> => {
+        let mut words = WordsPtr::new (Words::new ());
+        words.push (WordPtr::new(Word::Word (ws.to_string())));
+        words
+    },
+    <w:Word><mut e:Words> => 
+    {
+        e.insert (0, w);
+        e
+    },
+    <ws:WS><mut e:Words> => 
+    {
+        e.insert (0, WordPtr::new(Word::Word (ws.to_string())));
+        e
+    }
+}
+
+Word: WordPtr = {
+    <w:WORD> => {
+        WordPtr::new (Word::Word (w.to_string()))
+    },
+    <e:Expand> => e
+};
+
+Expand: WordPtr = {
+    <w:EXPAND> => {
+        WordPtr::new (Word::Expand (
+            if w.chars().nth(1).unwrap() == '{' { 
+                &w[2..w.len()-1] 
+            } else { 
+                &w[1..] 
+            }.to_string()))
+    },
+    <s:EXECUTE> => {
+        println!("{}", &s[2..s.len()-1]);
+        WordPtr::new (Word::Execute (CommandParser::new().parse(&s[2..s.len()-1]).unwrap()))
+    }
+};
